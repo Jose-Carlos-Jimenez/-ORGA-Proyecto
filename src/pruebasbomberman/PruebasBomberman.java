@@ -9,7 +9,7 @@ public class PruebasBomberman {
     public static String[][][] levels = {
         // Lvl 1
         {
-            {"L", "J", "L", "L", "E", "L", "L", "B", "N", "N", "L", "L"},
+            {"L", "J", "L", "L", "E", "L", "L", "B", "N", "L", "L", "L"},
             {"L", "L", "L", "N", "N", "L", "L", "L", "L", "N", "N", "N"},
             {"L", "L", "L", "N", "N", "N", "N", "N", "N", "L", "N", "N"},
             {"L", "L", "L", "L", "N", "L", "N", "L", "N", "L", "L", "N"},
