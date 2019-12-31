@@ -7,9 +7,10 @@ import javax.swing.JTable;
 
 public class Player {
     
-    private int lifes, posX, posY, posOriginalX, posOriginalY;
+    private int lifes, posX, posY, posOriginalX, posOriginalY, bonus, actualPoints;
     private LinkedList<Integer> times = new LinkedList<>();
     private LinkedList<Integer> points = new LinkedList<>();
+    private LinkedList<Bomb> bombs = new LinkedList<>();
     private JTable map;
     private final String name;
     
@@ -17,6 +18,8 @@ public class Player {
         this.name = name;
         this.map = map;
         this.lifes = 3;        
+        this.bonus = 1;
+        this.actualPoints = 0;
     }
     
     public void setPosition(int x, int y){
@@ -26,22 +29,35 @@ public class Player {
         this.posOriginalY = y;
     }
     
-    public void addPoints(int points){
-        this.points.addLast(points);
+    public void killingAnEnemy(){
+        actualPoints =+ 100;
+    }
+    
+    public void gettingABonus(){
+        actualPoints += 50;
+    }
+    
+    public String getActualPoints(){
+        addPoints();
+        return String.valueOf(this.actualPoints);        
+    }
+    
+    public void addPoints(){
+        this.points.addLast(this.actualPoints);
     }
     
     public void addTime(int time){
         this.times.addLast(time);
     }
     
-    // True if the player doesnt have lifes
+    // True if the player have lifes
     public boolean CheckLifes(){
-        if(this.lifes == 0){
-            return true;
+        if(this.lifes <= 0){
+            return false;
         }else if(this.lifes > 0){
-            return false;
+            return true;
         }else{
-            return false;
+            return true;
         }
     }
     
@@ -58,6 +74,7 @@ public class Player {
         this.lifes -= 1;
     }
     
+    
     /* Movement */
     public void Up(){
         if(posY == 0){
@@ -68,19 +85,20 @@ public class Player {
                 map.setValueAt("J", posY - 1, posX);
                 if(map.getValueAt(posY, posX) != "M"){
                     map.setValueAt("N", posY, posX);
-                }          
+                }
                 posY--;
             // Getting a bonus
             }else if(map.getValueAt(posY - 1, posX).equals("B")){
+                this.bonus++;
                 map.setValueAt("J", posY - 1, posX);
                 map.setValueAt("N", posY, posX);
                 posY--;
             // Touching an Enemy
             }else if(map.getValueAt(posY - 1, posX).equals("E")){
-                
-            // Next Level
+                this.LoseLife();
+            // End the game
             }else if(map.getValueAt(posY - 1, posX).equals("F")){
-                
+                this.actualPoints += 200;
             }
         }
     }
@@ -98,15 +116,16 @@ public class Player {
                 posY++;
             // Getting a bonus
             }else if(map.getValueAt(posY + 1, posX).equals("B")){
+                this.bonus++;
                 map.setValueAt("J", posY + 1, posX);
                 map.setValueAt("N", posY, posX);
                 posY++;
             // Touching an Enemy
             }else if(map.getValueAt(posY + 1, posX).equals("E")){
-                
-            // Next Level
+                this.LoseLife();
+            // End the game
             }else if(map.getValueAt(posY + 1, posX).equals("F")){
-                
+                this.actualPoints += 200;
             }
         }
     }
@@ -124,15 +143,16 @@ public class Player {
                 posX--;
             // Getting a bonus
             }else if(map.getValueAt(posY, posX - 1).equals("B")){
+                this.bonus++;
                 map.setValueAt("J", posY, posX - 1);
                 map.setValueAt("N", posY, posX);
                 posX--;
             // Touching an Enemy
             }else if(map.getValueAt(posY, posX - 1).equals("E")){
-                
-            // Next Level
+                this.LoseLife();
+            // End the game
             }else if(map.getValueAt(posY, posX - 1).equals("F")){
-                
+                this.actualPoints += 200;
             }
         }
     }
@@ -150,22 +170,25 @@ public class Player {
                 posX++;
             // Getting a bonus
             }else if(map.getValueAt(posY, posX + 1).equals("B")){
+                this.bonus++;
                 map.setValueAt("J", posY, posX + 1);
                 map.setValueAt("N", posY, posX);
                 posX++;
             // Touching an Enemy
             }else if(map.getValueAt(posY, posX + 1).equals("E")){
-                
-            // Next Level
+                this.LoseLife();
+            // End the game
             }else if(map.getValueAt(posY, posX + 1).equals("F")){
-                
+                this.actualPoints += 200;
             }
         }
     }
     
+    
     public void PutBomb(){
         
-        Bomb bomb = new Bomb(map, posY, posX);
+        Bomb bomb = new Bomb(map, posY, posX, this.bonus, this);
+        this.bombs.add(bomb);
         bomb.start();
         
     }
