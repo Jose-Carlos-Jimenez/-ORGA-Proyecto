@@ -32,8 +32,9 @@ public class Bomb extends Thread{
             while(r > 0){
                 if(map.getValueAt(posBombY - r, posBombX).equals("J")){
                     this.player.LoseLife();
-                }else if(map.getValueAt(posBombY - r, posBombX).equals("E")){
-                     // Muerte de enemigo
+                }else if(map.getValueAt(posBombY - 1, posBombX).equals("L")){
+                    map.setValueAt("O", posBombY - 1, posBombX);
+                    r = 0;
                 }else{
                     map.setValueAt("O", posBombY - r, posBombX);
                 }
@@ -46,8 +47,9 @@ public class Bomb extends Thread{
             while(r > 0){
                 if(map.getValueAt(posBombY + r, posBombX).equals("J")){
                     this.player.LoseLife();
-                }else if(map.getValueAt(posBombY + r, posBombX).equals("E")){
-                     // Muerte de enemigo
+                }else if(map.getValueAt(posBombY + 1, posBombX).equals("L")){
+                    map.setValueAt("O", posBombY + 1, posBombX);
+                    r = 0;
                 }else{
                     map.setValueAt("O", posBombY + r, posBombX);
                 }
@@ -60,8 +62,9 @@ public class Bomb extends Thread{
             while(r > 0){
                 if(map.getValueAt(posBombY, posBombX + r).equals("J")){
                     this.player.LoseLife();
-                }else if(map.getValueAt(posBombY, posBombX + r).equals("E")){
-                     // Muerte de enemigo
+                }else if(map.getValueAt(posBombY, posBombX + 1).equals("L")){
+                    map.setValueAt("O", posBombY, posBombX + 1);
+                    r = 0;
                 }else{
                     map.setValueAt("O", posBombY, posBombX + r);
                 }
@@ -74,8 +77,9 @@ public class Bomb extends Thread{
             while(r > 0){
                 if(map.getValueAt(posBombY, posBombX - r).equals("J")){
                     this.player.LoseLife();
-                }else if(map.getValueAt(posBombY, posBombX - r).equals("E")){
-                     // Muerte de enemigo
+                }else if(map.getValueAt(posBombY, posBombX - 1).equals("L")){
+                    map.setValueAt("O", posBombY, posBombX - 1);
+                    r = 0;
                 }else{
                     map.setValueAt("O", posBombY, posBombX - r);
                 }
@@ -86,38 +90,47 @@ public class Bomb extends Thread{
         try{sleep(2000);}catch(Exception e){}
         r = this.range;
         // Regreso a N de lo que no es jugador o bonus
-        map.setValueAt("N", posBombY, posBombX);
+        map.setValueAt("", posBombY, posBombX);
         
-        try{
-            while(r > 0){
-                map.setValueAt("N", posBombY - r, posBombX);
-                r--;
-            }
-        }catch(Exception e){}
+        
+        while(r > 0){
+            try{
+                if(map.getValueAt(posBombY - r, posBombX).equals("O")){                    
+                    map.setValueAt("", posBombY - r, posBombX);                    
+                }
+            }catch(Exception e){}
+            r--;
+        }        
         r = this.range;
         // Down
-        try{
-            while(r > 0){
-                map.setValueAt("N", posBombY + r, posBombX);
-                r--;
-            }
-        }catch(Exception e){}
+        while(r > 0){
+            try{
+                if(map.getValueAt(posBombY + r, posBombX).equals("O")){                    
+                    map.setValueAt("", posBombY + r, posBombX);                    
+                }
+            }catch(Exception e){}
+            r--;
+        }        
         r = this.range;
         // Right
-        try{
-            while(r > 0){
-                map.setValueAt("N", posBombY, posBombX + r);
-                r--;
-            }
-        }catch(Exception e){}
+        while(r > 0){
+            try{
+                if(map.getValueAt(posBombY, posBombX + r).equals("O")){                    
+                    map.setValueAt("", posBombY, posBombX + r);                    
+                }
+            }catch(Exception e){}
+            r--;
+        }        
         r = this.range;
         // Left
-        try{
-            while(r > 0){
-                map.setValueAt("N", posBombY, posBombX - r);
-                r--;
-            }
-        }catch(Exception e){}
+        while(r > 0){
+            try{
+                if(map.getValueAt(posBombY, posBombX - r).equals("O")){                    
+                    map.setValueAt("", posBombY, posBombX - r);                    
+                }
+            }catch(Exception e){}
+            r--;
+        }        
     }
     
 }
